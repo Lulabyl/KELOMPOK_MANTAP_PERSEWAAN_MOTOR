@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <windows.h>
+#define MAX_MOTOR 100
 
 void gotoxy(int x, int y) {
     COORD coord;
@@ -31,10 +32,34 @@ typedef struct {
 User currentUser;
 int isLoggedIn = 0;
 
+typedef struct {
+    char nama[30];
+    int stok;
+    float hargaPerHari;
+} Motor;
+
+Motor daftarMotor[MAX_MOTOR];
+int jumlahMotor = 0;
+
+typedef struct {
+    char namaPenyewa[50];
+    char namaMotor[30];
+    int durasiSewa;
+} Penyewa;
+
+Penyewa daftarPenyewa[100];
+int jumlahPenyewa = 0;
+
+
 void clearScreen();
 void tampilanMainMenu();
 void registerUser();
 void loginUser();
+void tampilanMenuMasuk();
+void menuMasuk(int a);
+void tambahMotor();
+void stockMotor();
+void dataPenyewa();
 
 int main() {
     system("color F0");
@@ -107,6 +132,32 @@ void tampilanMainMenu(){
     gotoxy(25, 11);
     printf("=================================================");
 }
+void tampilanMenuMasuk(){
+    gotoxy(25, 3);
+    printf("=================================================");
+    gotoxy(25, 4);
+    printf("=    SELAMAT DATANG DI SEWA MOTOR SATUHATI      =");
+    gotoxy(25, 5);
+    printf("=================================================");
+    gotoxy(25, 7);
+    printf("   	      1.Tambah Stok Motor               ");
+    gotoxy(25, 8);
+    printf("             2.Semua Jenis Motor               ");
+    gotoxy(25, 9);
+    printf("             3.Tambah Data Penyewa             ");
+    gotoxy(25, 10);
+    printf("             4.Kalkulasi Harga                 ");
+    gotoxy(25, 11);
+    printf("             5.Cetak Struk                     ");
+    gotoxy(25, 12);
+    printf("             0.LOGOUT                          ");
+    gotoxy(25, 13);
+    printf("=================================================");
+    gotoxy(25, 14);
+    printf("= Dari Kami, Untuk Perjalanan Tak Terlupakanmu. =");
+    gotoxy(25, 15);
+    printf("=================================================");
+}
 
 void registerUser() {
     clearScreen();
@@ -134,6 +185,134 @@ void registerUser() {
     gotoxy(25, 10);
     printf("Registrasi berhasil! Sekarang Anda bisa LOGIN.\n");
 }
+
+void menuMasuk(int a) {
+    int pos = 1;
+    int key;
+
+    do {
+        clearScreen();
+        tampilanMenuMasuk();
+
+        // Highlight current selection with arrow
+        for(int i = 1; i <= 6; i++) {
+            gotoxy(20, 6 + i);
+            if(i == pos) {
+                printf("--> ");
+            } else {
+                printf("    ");
+            }
+        }
+
+        key = getch();
+        if(key == 0 || key == 224) { // Arrow key detection
+            key = getch();
+            switch(key) {
+                case 72: // Up arrow
+                    pos--;
+                    if(pos < 1) pos = 6;
+                    break;
+                case 80: // Down arrow
+                    pos++;
+                    if(pos > 6) pos = 1;
+                    break;
+            }
+        }
+
+        if(key == 13) { // Enter key
+            clearScreen();
+            switch(pos) {
+                case 1:
+                    tambahMotor();
+                    break;
+                case 2:
+                    stockMotor();
+                    break;
+                case 3:
+                    dataPenyewa();
+                    break;
+                case 4:
+                    kalkulasiHarga();
+                    break;
+                case 5:
+                    cetakStruk();
+                    break;
+                case 6:
+                    isLoggedIn = 0;
+                    gotoxy(25, 20);
+                    printf("Logout berhasil.\n");
+                    break;
+            }
+
+            if(pos != 6) {
+                gotoxy(25, 22);
+                printf("Tekan ENTER untuk kembali...");
+                getchar();
+            }
+        }
+    } while (pos != 6 || key != 13);
+}
+
+void tambahMotor() {
+    clearScreen();
+    if (jumlahMotor >= MAX_MOTOR) {
+        gotoxy(25, 15);
+        printf("Kapasitas data motor penuh.\n");
+        return;
+    }
+
+    Motor m;
+
+    gotoxy(25, 5);
+    printf("--- TAMBAH DATA MOTOR ---");
+
+    gotoxy(25, 7);
+    printf("Nama Motor: ");
+    fgets(m.nama, sizeof(m.nama), stdin);
+    m.nama[strcspn(m.nama, "\n")] = '\0';
+
+    gotoxy(25, 8);
+    printf("Jumlah Stok: ");
+    scanf("%d", &m.stok);
+    getchar();
+
+    gotoxy(25, 9);
+    printf("Harga Sewa per Hari: ");
+    scanf("%f", &m.hargaPerHari);
+    getchar();
+
+    daftarMotor[jumlahMotor] = m;
+    jumlahMotor++;
+
+    gotoxy(25, 11);
+    printf("Motor berhasil ditambahkan!\n");
+}
+
+void stockMotor() {
+    clearScreen();
+    if (jumlahMotor == 0) {
+        gotoxy(25, 10);
+        printf("Belum ada data motor yang ditambahkan.\n");
+        return;
+    }
+
+    gotoxy(25, 5);
+    printf("--- DAFTAR STOK MOTOR ---");
+
+    for (int i = 0; i < jumlahMotor; i++) {
+        gotoxy(25, 7 + (i*5));
+        printf("Motor ke-%d", i + 1);
+        gotoxy(25, 8 + (i*5));
+        printf("Nama Motor        : %s", daftarMotor[i].nama);
+        gotoxy(25, 9 + (i*5));
+        printf("Jumlah Stok       : %d", daftarMotor[i].stok);
+        gotoxy(25, 10 + (i*5));
+        printf("Harga per Hari    : Rp %.2f", daftarMotor[i].hargaPerHari);
+        gotoxy(25, 11 + (i*5));
+        printf("-----------------------------------");
+    }
+}
+
 
 void loginUser() {
     clearScreen();
