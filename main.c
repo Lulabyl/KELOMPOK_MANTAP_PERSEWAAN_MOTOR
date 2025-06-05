@@ -61,6 +61,29 @@ void tambahMotor();
 void stockMotor();
 void dataPenyewa();
 void kalkulasiHarga();
+void cetakStruk();
+void getPassword(char *password, int max_length) {
+    int i = 0;
+    char ch;
+    
+    while (1) {
+        ch = _getch(); // Baca karakter tanpa echo
+        
+        if (ch == 13) { // Enter
+            password[i] = '\0';
+            break;
+        } else if (ch == 8) { // Backspace
+            if (i > 0) {
+                i--;
+                printf("\b \b"); // Hapus karakter dari layar
+            }
+        } else if (i < max_length - 1) {
+            password[i] = ch;
+            i++;
+            printf("*"); // Tampilkan asterisk
+        }
+    }
+}
 
 int main() {
     system("color F0");
@@ -170,19 +193,19 @@ void registerUser() {
             printf("User '%s' sudah terdaftar.\n", currentUser.username);
             return;
      }
-     gotoxy(25, 5);
-      printf("\n--- REGISTRASI USER BARU ---\n");
-     gotoxy(25, 7); 
-      printf("Masukkan Username: ");
+    gotoxy(25, 5);
+    printf("--- REGISTRASI USER BARU ---");
 
+    gotoxy(25, 7); 
+    printf("Masukkan Username: ");
     fgets(currentUser.username, sizeof(currentUser.username), stdin);
     currentUser.username[strcspn(currentUser.username, "\n")] = '\0';
- 
+
     gotoxy(25, 8);
     printf("Masukkan Password: ");
-    fgets(currentUser.password, sizeof(currentUser.password), stdin);
+    getPassword(currentUser.password, sizeof(currentUser.password));
     currentUser.password[strcspn(currentUser.password, "\n")] = '\0';
-
+    
     gotoxy(25, 10);
     printf("Registrasi berhasil! Sekarang Anda bisa LOGIN.\n");
 }
@@ -535,7 +558,8 @@ void loginUser() {
     char inputPassword[30];
 
     gotoxy(25, 5);
-    printf("\n--- LOGIN ---\n");
+    printf("--- LOGIN ---");
+
     gotoxy(25, 7);
     printf("Username: ");
     fgets(inputUsername, sizeof(inputUsername), stdin);
@@ -543,15 +567,15 @@ void loginUser() {
 
     gotoxy(25, 8);
     printf("Password: ");
-    fgets(inputPassword, sizeof(inputPassword), stdin);
+    getPassword(inputPassword, sizeof(inputPassword)); // Ganti sensor() dengan ini
     inputPassword[strcspn(inputPassword, "\n")] = '\0';
-
 
     if (strcmp(inputUsername, currentUser.username) == 0 && strcmp(inputPassword, currentUser.password) == 0) {
         loadingAnimation(); 
         isLoggedIn = 1;
         gotoxy(25, 15);
         printf("Selamat datang Sang Atmin!");
+         menuMasuk(0);
     } else {
         gotoxy(25, 10);
         printf("Username atau password salah. Coba lagi.");
