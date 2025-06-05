@@ -313,6 +313,66 @@ void stockMotor() {
     }
 }
 
+void dataPenyewa() {
+    clearScreen();
+    if (jumlahMotor == 0) {
+        gotoxy(25, 10);
+        printf("Belum ada data motor yang tersedia untuk disewa.\n");
+        return;
+    }
+
+    Penyewa p;
+
+    gotoxy(25, 5);
+    printf("--- INPUT DATA PENYEWA ---");
+
+    gotoxy(25, 7);
+    printf("Nama Penyewa: ");
+    fgets(p.namaPenyewa, sizeof(p.namaPenyewa), stdin);
+    p.namaPenyewa[strcspn(p.namaPenyewa, "\n")] = '\0';
+
+    gotoxy(25, 9);
+    printf("Pilih motor yang ingin disewa:");
+    for (int i = 0; i < jumlahMotor; i++) {
+        gotoxy(25, 10 + i);
+        printf("%d. %s (Stok: %d, Harga/hari: Rp %.2f)", i + 1,
+               daftarMotor[i].nama, daftarMotor[i].stok, daftarMotor[i].hargaPerHari);
+    }
+
+    int pilihan;
+    gotoxy(25, 11 + jumlahMotor);
+    printf("Masukkan nomor motor: ");
+    scanf("%d", &pilihan);
+    getchar();
+
+    if (pilihan < 1 || pilihan > jumlahMotor) {
+        gotoxy(25, 13 + jumlahMotor);
+        printf("Pilihan tidak valid.\n");
+        return;
+    }
+
+    if (daftarMotor[pilihan - 1].stok == 0) {
+        gotoxy(25, 13 + jumlahMotor);
+        printf("Maaf, motor ini sedang kosong.\n");
+        return;
+    }
+
+    strcpy(p.namaMotor, daftarMotor[pilihan - 1].nama);
+
+    gotoxy(25, 13 + jumlahMotor);
+    printf("Lama sewa (hari): ");
+    scanf("%d", &p.durasiSewa);
+    getchar();
+
+    daftarMotor[pilihan - 1].stok--;
+
+    daftarPenyewa[jumlahPenyewa] = p;
+    jumlahPenyewa++;
+
+    gotoxy(25, 15 + jumlahMotor);
+    printf("Data penyewa berhasil disimpan!\n");
+}
+
 
 void loginUser() {
     clearScreen();
