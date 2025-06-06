@@ -111,6 +111,7 @@ int main() {
                     printf("\nTerima kasih telah menggunakan program Sewa Motor SatuHati.\n");
                     break;
                 default:
+                author();
                 gotoxy(30, 15);
                     printf("\nPilihan tidak valid. Yang benar saja!.\n");
                     break;
@@ -580,4 +581,25 @@ void loginUser() {
         gotoxy(25, 10);
         printf("Username atau password salah. Coba lagi.");
     }
+}
+
+void author() {
+	system("cls");
+	gotoxy(20,8);
+    printf("Created by");
+
+    gotoxy(20, 10);
+    printf("Yosua Setiawan Hemus - 672024016");
+
+    gotoxy(20, 11);
+    printf("Willbert Marvelous Tedevince - 672024035");
+
+    gotoxy(20, 12);
+    printf("Xavier Calvin Kurnia Wijaya - 672024216");
+
+    gotoxy(20, 13);
+    printf("Matthew Dustin Sukiat - 672024260");
+
+    gotoxy(20, 14);
+    printf("Karrel Valenta Putra Chrishananda - 672024261");
 }
