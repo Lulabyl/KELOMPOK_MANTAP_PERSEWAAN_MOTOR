@@ -109,9 +109,9 @@ int main() {
                 case 0:
                 gotoxy(30, 15);
                     printf("\nTerima kasih telah menggunakan program Sewa Motor SatuHati.\n");
+                    author();
                     break;
                 default:
-                author();
                 gotoxy(30, 15);
                     printf("\nPilihan tidak valid. Yang benar saja!.\n");
                     break;
@@ -601,5 +601,5 @@ void author() {
     printf("Matthew Dustin Sukiat - 672024260");
 
     gotoxy(20, 14);
-    printf("Karrel Valenta Putra Chrishananda - 672024261");
+    printf("Karrel Valenta Putra Chrishananda - 672024261");
 }
