@@ -12,7 +12,6 @@ void gotoxy(int x, int y) {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-// Loading animation
 void loadingAnimation() {
     system("cls");
     gotoxy(45, 10);
@@ -62,25 +61,26 @@ void stockMotor();
 void dataPenyewa();
 void kalkulasiHarga();
 void cetakStruk();
+void author();
 void getPassword(char *password, int max_length) {
     int i = 0;
     char ch;
     
     while (1) {
-        ch = _getch(); // Baca karakter tanpa echo
+        ch = _getch(); 
         
-        if (ch == 13) { // Enter
+        if (ch == 13) { 
             password[i] = '\0';
             break;
-        } else if (ch == 8) { // Backspace
+        } else if (ch == 8) { 
             if (i > 0) {
                 i--;
-                printf("\b \b"); // Hapus karakter dari layar
+                printf("\b \b"); 
             }
         } else if (i < max_length - 1) {
             password[i] = ch;
             i++;
-            printf("*"); // Tampilkan asterisk
+            printf("*"); 
         }
     }
 }
@@ -165,17 +165,17 @@ void tampilanMenuMasuk(){
     gotoxy(25, 5);
     printf("=================================================");
     gotoxy(25, 7);
-    printf("   	      1.Tambah Stok Motor               ");
+    printf("   	      Tambah Stok Motor               ");
     gotoxy(25, 8);
-    printf("             2.Semua Jenis Motor               ");
+    printf("             Semua Jenis Motor               ");
     gotoxy(25, 9);
-    printf("             3.Tambah Data Penyewa             ");
+    printf("             Tambah Data Penyewa             ");
     gotoxy(25, 10);
-    printf("             4.Kalkulasi Harga                 ");
+    printf("             Kalkulasi Harga                 ");
     gotoxy(25, 11);
-    printf("             5.Cetak Struk                     ");
+    printf("             Cetak Struk                     ");
     gotoxy(25, 12);
-    printf("             0.LOGOUT                          ");
+    printf("             LOGOUT                          ");
     gotoxy(25, 13);
     printf("=================================================");
     gotoxy(25, 14);
@@ -219,7 +219,6 @@ void menuMasuk(int a) {
         clearScreen();
         tampilanMenuMasuk();
 
-        // Highlight current selection with arrow
         for(int i = 1; i <= 6; i++) {
             gotoxy(20, 6 + i);
             if(i == pos) {
@@ -230,21 +229,21 @@ void menuMasuk(int a) {
         }
 
         key = getch();
-        if(key == 0 || key == 224) { // Arrow key detection
+        if(key == 0 || key == 224) { 
             key = getch();
             switch(key) {
-                case 72: // Up arrow
+                case 72: // arrow atas
                     pos--;
                     if(pos < 1) pos = 6;
                     break;
-                case 80: // Down arrow
+                case 80: // arrow atas
                     pos++;
                     if(pos > 6) pos = 1;
                     break;
             }
         }
 
-        if(key == 13) { // Enter key
+        if(key == 13) { // Enter 
             clearScreen();
             switch(pos) {
                 case 1:
@@ -409,7 +408,7 @@ void kalkulasiHarga() {
     gotoxy(25, 5);
     printf("--- KALKULASI HARGA SEWA ---");
 
-    // Display all renters
+    
     for (int i = 0; i < jumlahPenyewa; i++) {
         gotoxy(25, 7 + (i*4));
         printf("Penyewa ke-%d", i + 1);
@@ -433,8 +432,7 @@ void kalkulasiHarga() {
         return;
     }
 
-    // Find the motor information
-    float hargaPerHari = 0;
+        float hargaPerHari = 0;
     for (int i = 0; i < jumlahMotor; i++) {
         if (strcmp(daftarMotor[i].nama, daftarPenyewa[pilihan-1].namaMotor) == 0) {
             hargaPerHari = daftarMotor[i].hargaPerHari;
@@ -472,8 +470,7 @@ void cetakStruk() {
     gotoxy(25, 5);
     printf("--- CETAK STRUK SEWA ---");
 
-    // Display all renters
-    for (int i = 0; i < jumlahPenyewa; i++) {
+       for (int i = 0; i < jumlahPenyewa; i++) {
         gotoxy(25, 7 + (i*4));
         printf("Penyewa ke-%d", i + 1);
         gotoxy(25, 8 + (i*4));
@@ -496,8 +493,7 @@ void cetakStruk() {
         return;
     }
 
-    // Find the motor information
-    float hargaPerHari = 0;
+        float hargaPerHari = 0;
     for (int i = 0; i < jumlahMotor; i++) {
         if (strcmp(daftarMotor[i].nama, daftarPenyewa[pilihan-1].namaMotor) == 0) {
             hargaPerHari = daftarMotor[i].hargaPerHari;
